@@ -1,55 +1,52 @@
-package main
+package exprgen
 
 import (
-	"fmt"
+	"errors"
 	"math/rand"
-	"github.com/stanlyzoolo/basiccalc"
+	"strings"
+	"time"
 )
 
-// operators is a map where keys represent mathematical operators as a string
-//  type and values represent the corresponding function.
-var operators = map[rune]int{
-	'+': '+',
-	'-': '-',
+// operators map represents mathematical operators.
+var operators = map[int]string{
+	0: "+",
+	1: "-",
 }
 
-// singledigits is a map where keys represent single digits
-//  as a string type and values represent them in type int.
-var singledigits = map[rune]int{
-	'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+// singledigits map represent single digits from 0 to 9.
+var singledigits = map[int]string{
+	0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5",
+	6: "6", 7: "7", 8: "8", 9: "9",
 }
 
-func randRune(s map[rune]int) rune {
-	var seq []rune
-	for k := range s {
-		seq = append(seq, k)
-	}
-	return seq[rand.Intn(len(seq))]
-}
+// symbolGen generates a random arguments and operator and
+// return symbols, as a slice of strings.
+func symbolGen() ([]string, error) {
+	// symbols represent a storage for random strings.
+	var symbols []string
 
-func setArgument() rune {
-	return randRune(singledigits)
-}
+	rand.Seed(time.Now().UnixNano())
 
-func setOperator() rune {
-	return randRune(operators)
-}
+	symbols = append(symbols,
+		singledigits[rand.Intn(len(singledigits))],
+		operators[rand.Intn(len(operators))],
+		singledigits[rand.Intn(len(singledigits))],
+	)
 
-func makeExpression() string {
-	var sequence []rune
-	sequence = append(sequence, setArgument(), setOperator())
-
-	if len(sequence) < 3 {
-		sequence = append(sequence, setArgument())
+	if len(symbols) < 3 {
+		return symbols, errors.New("symbols is not ready")
 	}
 
-	return string(sequence)
+	return symbols, errors.New("failed randSymbols()")
+
 }
 
-func main() {
+// InputMaker build a string from symbols, that represent an expression.
+func InputMaker(symbols []string) string {
+	var b strings.Builder
+	for _, s := range symbols {
+		b.WriteString(s)
+	}
 
-
-	srt := makeExpression()
-	fmt.Println(srt)
-	fmt.Println(basiccalc.Eval(srt))
+	return b.String()
 }
