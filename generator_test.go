@@ -1,16 +1,13 @@
 package exprgen
 
 import (
-	"math/rand"
+	// "math/rand"
 	"testing"
-	"time"
+	// "time"
 )
 
-func TestSymbolGen(t *testing.T) {
-	var testSymbols []string
-
-	testSymbols = []string{"2", "4", "+"}
-
+func TestRandLenExpression(t *testing.T) {
+	
 	var i, v, op, sd interface{}
 	i = "-"
 	op = operators[1]
@@ -26,24 +23,24 @@ func TestSymbolGen(t *testing.T) {
 		t.Error("wrong type in singledigits value")
 	}
 
-	s, err := symbolGen()
-	if len(s) < len(testSymbols) && err != nil {
-		t.Errorf("failed randSymbols(); %s", err)
+	evenDigit := 8
+
+	v, err := randLenExpression(evenDigit)
+
+	if err == nil {
+		t.Errorf("failed randLenExpression() with %v input argument; %s", v, err)
+
 	}
 
-}
+	oddDigit := 7
+	v, err = randLenExpression(oddDigit)
 
-func TestInputMaker(t *testing.T) {
-	rand.Seed(time.Now().UnixNano())
+	if err != nil {
+		t.Errorf("failed randLenExpression() with %v input argument; %s", v, err)
 
-	var testSymbols []string
+	}
 
-	testSymbols = append(testSymbols,
-		singledigits[rand.Intn(len(singledigits))],
-		operators[rand.Intn(len(operators))],
-		singledigits[rand.Intn(len(singledigits))],
-	)
 
-	InputMaker(testSymbols)
+	
 
 }

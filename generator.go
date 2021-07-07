@@ -19,34 +19,30 @@ var singledigits = map[int]string{
 	6: "6", 7: "7", 8: "8", 9: "9",
 }
 
-// symbolGen generates a random arguments and operator and
-// return symbols, as a slice of strings.
-func symbolGen() ([]string, error) {
-	// symbols represent a storage for random strings.
-	var symbols []string
-
+func randLenExpression(odd int) (string, error) {
 	rand.Seed(time.Now().UnixNano())
 
-	symbols = append(symbols,
-		singledigits[rand.Intn(len(singledigits))],
-		operators[rand.Intn(len(operators))],
-		singledigits[rand.Intn(len(singledigits))],
-	)
-
-	if len(symbols) < 3 {
-		return symbols, errors.New("symbols is not ready")
+	if odd%2 == 0 {
+		return "", errors.New("invalid input argument; enter odd digit")
 	}
 
-	return symbols, errors.New("failed randSymbols()")
+	var symbols []string
 
-}
+	for i := odd; i > 0; i-- {
+		symbols = append(symbols,
+			singledigits[rand.Intn(len(singledigits))],
+			operators[rand.Intn(len(operators))],
+		)
 
-// InputMaker build a string from symbols, that represent an expression.
-func InputMaker(symbols []string) string {
+	}
+
+	symbols = symbols[:odd]
+
 	var b strings.Builder
-	for _, s := range symbols {
-		b.WriteString(s)
+	for _, v := range symbols {
+		b.WriteString(v)
 	}
 
-	return b.String()
+	return b.String(), nil
+
 }
