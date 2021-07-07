@@ -1,47 +1,49 @@
 package exprgen
 
 import (
-	"errors"
 	"math/rand"
 	"strings"
 	"time"
 )
 
-// operators map represents mathematical operators.
-var operators = map[int]string{
-	0: "+",
-	1: "-",
-}
+func Generate(r int) string {
 
-// singledigits map represent single digits from 0 to 9.
-var singledigits = map[int]string{
-	0: "0", 1: "1", 2: "2", 3: "3", 4: "4", 5: "5",
-	6: "6", 7: "7", 8: "8", 9: "9",
-}
+	ops := "+-"
+	digits := "0123456789"
 
-// symbolGen generates a random arguments and operator and
-// return symbols, as a slice of strings.
-func symbolGen() ([]string, error) {
-	// symbols represent a storage for random strings.
-	var symbols []string
+	rand.Seed(time.Now().UnixNano()) //
 
-	rand.Seed(time.Now().UnixNano())
+	any := func(data string) string {
+		return string(data[rand.Intn(len(data))])
+	}
 
-	symbols = append(symbols,
-		singledigits[rand.Intn(len(singledigits))],
-		operators[rand.Intn(len(operators))],
-		singledigits[rand.Intn(len(singledigits))],
-	)
+	space := func() string {
+		if rand.Intn(2) == 0 {
+			return ""
+		}
+		return " "
+	}
 
-	return symbols, errors.New("failed randSymbols()")
-
-}
-
-// InputMaker build a string from symbols, that represent an expression.
-func InputMaker(symbols []string) string {
 	var b strings.Builder
-	for _, s := range symbols {
+
+	decorator := func(s string) {
+		b.WriteString(space())
 		b.WriteString(s)
+		b.WriteString(space())
+	}
+
+	operand := func() {
+		decorator(any(digits))
+	}
+	operator := func() {
+		decorator(any(ops))
+	}
+
+	operand() // init builder by first digit
+
+	for i := 0; i < r; i++ {
+		operator()
+		operand()
 	}
 
 	return b.String()
