@@ -33,10 +33,6 @@ func symbolGen() ([]string, error) {
 		singledigits[rand.Intn(len(singledigits))],
 	)
 
-	if len(symbols) < 3 {
-		return symbols, errors.New("symbols is not ready")
-	}
-
 	return symbols, errors.New("failed randSymbols()")
 
 }
