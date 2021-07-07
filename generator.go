@@ -19,6 +19,7 @@ var singledigits = map[int]string{
 	6: "6", 7: "7", 8: "8", 9: "9",
 }
 
+// randLenExpression builds an expression of arbitrary length according to input value.
 func randLenExpression(odd int) (string, error) {
 	rand.Seed(time.Now().UnixNano())
 
