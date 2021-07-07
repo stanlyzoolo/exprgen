@@ -1,13 +1,11 @@
 package exprgen
 
 import (
-	// "math/rand"
 	"testing"
-	// "time"
 )
 
 func TestRandLenExpression(t *testing.T) {
-	
+
 	var i, v, op, sd interface{}
 	i = "-"
 	op = operators[1]
@@ -39,8 +37,5 @@ func TestRandLenExpression(t *testing.T) {
 		t.Errorf("failed randLenExpression() with %v input argument; %s", v, err)
 
 	}
-
-
-	
 
 }
