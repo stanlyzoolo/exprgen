@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Generate(r int) string {
+func Generate(r uint) string {
 
 	ops := "+-"
 	digits := "0123456789"
@@ -41,7 +41,7 @@ func Generate(r int) string {
 
 	operand() // init builder by first digit
 
-	for i := 0; i < r; i++ {
+	for i := 0; uint(i) < r; i++ {
 		operator()
 		operand()
 	}

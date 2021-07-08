@@ -7,15 +7,17 @@ import (
 	. "github.com/stanlyzoolo/basiccalc"
 )
 
-var r int = 1000 // any int value
 
 func TestGenerate(t *testing.T) {
+	var r uint = 1000 // any uint value
 
-	gen := func(r int) bool {
-		return len(Generate(r)) == r
+	gen := func(r uint) bool {
+		r = 100
+		return uint(len(Generate(r))) == r
 	}
 
-	err := quick.Check(gen, &quick.Config{MaxCount: r})
+	var i int = 10 // any int value
+	err := quick.Check(gen, &quick.Config{MaxCount: i})
 
 	if err != nil {
 		t.Errorf("failed Generate(); %s", err)
@@ -27,3 +29,4 @@ func TestGenerate(t *testing.T) {
 	}
 
 }
+
