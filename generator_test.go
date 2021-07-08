@@ -1,49 +1,29 @@
 package exprgen
 
 import (
-	"math/rand"
 	"testing"
-	"time"
+	"testing/quick"
+
+	. "github.com/stanlyzoolo/basiccalc"
 )
 
-func TestSymbolGen(t *testing.T) {
-	var testSymbols []string
+var r int = 1000 // any int value
 
-	testSymbols = []string{"2", "4", "+"}
+func TestGenerate(t *testing.T) {
 
-	var i, v, op, sd interface{}
-	i = "-"
-	op = operators[1]
-
-	v = "5"
-	sd = singledigits[5]
-
-	if i.(string) != op.(string) {
-		t.Error("wrong type in operators value")
+	gen := func(r int) bool {
+		return len(Generate(r)) == r
 	}
 
-	if v.(string) != sd.(string) {
-		t.Error("wrong type in singledigits value")
+	err := quick.Check(gen, &quick.Config{MaxCount: r})
+
+	if err != nil {
+		t.Errorf("failed Generate(); %s", err)
 	}
 
-	s, err := symbolGen()
-	if len(s) < len(testSymbols) && err != nil {
-		t.Errorf("failed randSymbols(); %s", err)
+	_, err = Eval(Generate(r))
+	if err != nil {
+		t.Errorf("failed Eval(); %s", err)
 	}
-
-}
-
-func TestInputMaker(t *testing.T) {
-	rand.Seed(time.Now().UnixNano())
-
-	var testSymbols []string
-
-	testSymbols = append(testSymbols,
-		singledigits[rand.Intn(len(singledigits))],
-		operators[rand.Intn(len(operators))],
-		singledigits[rand.Intn(len(singledigits))],
-	)
-
-	InputMaker(testSymbols)
 
 }
