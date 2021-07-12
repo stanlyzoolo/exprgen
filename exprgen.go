@@ -11,7 +11,7 @@ func Generate(r uint) string {
 	ops := "+-"
 	digits := "0123456789"
 
-	rand.Seed(time.Now().UnixNano()) //
+	rand.Seed(time.Now().UnixNano())
 
 	any := func(data string) string {
 		return string(data[rand.Intn(len(data))])
@@ -41,10 +41,11 @@ func Generate(r uint) string {
 
 	operand() // init builder by first digit
 
-	for i := 0; uint(i) < r; i++ {
+	for i := 0; uint(i) <= r; i++ {
 		operator()
 		operand()
 	}
 
 	return b.String()
+
 }
