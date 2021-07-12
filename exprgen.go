@@ -3,49 +3,51 @@ package exprgen
 import (
 	"math/rand"
 	"strings"
-	"time"
+	// "github.com/stanlyzoolo/basiccalc"
 )
 
-func Generate(r uint) string {
+// operators is a map where keys represent mathematical operators as a string
+//  type and values represent the corresponding function.
+var operators = map[rune]int{
+	'+': '+',
+	'-': '-',
+}
 
-	ops := "+-"
-	digits := "0123456789"
+// singledigits is a map where keys represent single digits
+//  as a string type and values represent them in type int.
+var singledigits = map[rune]int{
+	'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+}
 
-	rand.Seed(time.Now().UnixNano())
-
-	any := func(data string) string {
-		return string(data[rand.Intn(len(data))])
+func randRune(s map[rune]int) string {
+	var seq []string
+	for k := range s {
+		seq = append(seq, string(k))
 	}
+	return seq[rand.Intn(len(seq))]
+}
 
-	space := func() string {
-		if rand.Intn(2) == 0 {
-			return ""
-		}
-		return " "
-	}
+func setArgument() string {
+	return randRune(singledigits)
+}
+
+func setOperator() string {
+	return randRune(operators)
+}
+
+func Generate(r uint) []string {
 
 	var b strings.Builder
+	b.WriteString(setArgument())
+	b.WriteString(setOperator())
+	b.WriteString(setArgument())
 
-	decorator := func(s string) {
-		b.WriteString(space())
-		b.WriteString(s)
-		b.WriteString(space())
-	}
+	var sequence []string
+	sequence = append(sequence, b.String())
 
-	operand := func() {
-		decorator(any(digits))
-	}
-	operator := func() {
-		decorator(any(ops))
-	}
+	// if len(sequence) < 3 {
+	// 	sequence = append(sequence, setArgument())
+	// }
 
-	operand() // init builder by first digit
-
-	for i := 0; uint(i) <= r; i++ {
-		operator()
-		operand()
-	}
-
-	return b.String()
-
+	return sequence
 }
