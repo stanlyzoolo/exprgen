@@ -1,15 +1,13 @@
 package exprgen
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
 )
 
 func Generate(r uint8) string {
-
-	ops := "+-"
-	digits := "0123456789"
 
 	rand.Seed(time.Now().UnixNano())
 
@@ -26,17 +24,12 @@ func Generate(r uint8) string {
 
 	var b strings.Builder
 
-	decorator := func(s string) {
-		b.WriteString(space())
-		b.WriteString(s)
-		b.WriteString(space())
+	operand := func() {
+		fmt.Fprint(&b, space(), any("0123456789"), space())
 	}
 
-	operand := func() {
-		decorator(any(digits))
-	}
 	operator := func() {
-		decorator(any(ops))
+		fmt.Fprint(&b, space(), any("+-"), space())
 	}
 
 	operand() // init builder by first digit
