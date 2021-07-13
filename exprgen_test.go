@@ -6,9 +6,9 @@ import (
 	"testing/quick"
 )
 
-func countDigits(s string) int {
+func countDigits(s string) uint8 {
 	digits := "0123456789"
-	var b int = 0
+	var b uint8 = 0
 
 	for _, r := range s {
 		for _, v := range digits {
@@ -20,10 +20,10 @@ func countDigits(s string) int {
 	return b
 }
 
-func countOperands(s string) int {
+func countOperands(s string) uint8 {
 	ops := "+-"
 
-	var a int = 0
+	var a uint8 = 0
 	for _, r := range s {
 		for _, v := range ops {
 			if r == v {
@@ -35,28 +35,29 @@ func countOperands(s string) int {
 }
 
 func TestGenerate(t *testing.T) {
-	
-	// var i int = 2 // any int value for &quick.Config{}
 
-	genOp := func(r uint) bool {
-		return countOperands(Generate(r)) == int(r+1)
+	genOp := func(r uint8) bool {
+		t.Logf("genOp parameter: %v", r)
+		return countOperands(Generate(r)) == r
 	}
-	errOp := quick.Check(genOp, nil) // &quick.Config{MaxCount: i}
+	errOp := quick.Check(genOp, nil)
 
 	if errOp != nil {
 		t.Errorf("failed Generate(); %s", errOp)
 	}
 
-	genDig := func(r uint) bool {
-		return countDigits(Generate(r)) == int(r+2)
+	genDig := func(r uint8) bool {
+		t.Logf("genDig parameter: %v", r)
+
+		return countDigits(Generate(r)) == r+1
 	}
-	errDig := quick.Check(genDig, nil) // &quick.Config{MaxCount: i}
+	errDig := quick.Check(genDig, nil)
 
 	if errDig != nil {
 		t.Errorf("failed Generate(); %s", errDig)
 	}
 
-	var r uint = 2 // any int value
+	var r uint8 = 2
 	_, err := Eval(Generate(r))
 	if err != nil {
 		t.Errorf("failed Eval(); %s", err)
