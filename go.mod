@@ -1,4 +1,4 @@
-module exprgen
+module github.com/stanlyzoolo/exprgen
 
 go 1.16
 
