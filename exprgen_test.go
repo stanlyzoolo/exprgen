@@ -8,7 +8,7 @@ import (
 
 func countDigits(s string) uint8 {
 	digits := "0123456789"
-	var b uint8 = 0
+	var b uint8
 
 	for _, r := range s {
 		for _, v := range digits {
@@ -23,7 +23,7 @@ func countDigits(s string) uint8 {
 func countOperands(s string) uint8 {
 	ops := "+-"
 
-	var a uint8 = 0
+	var a uint8
 	for _, r := range s {
 		for _, v := range ops {
 			if r == v {

@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+// Generate provides the creation of a random expression according
+// to the input length parameter. 
 func Generate(r uint8) string {
 
 	rand.Seed(time.Now().UnixNano())
